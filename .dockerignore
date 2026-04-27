@@ -10,7 +10,6 @@
 Dockerfile
 docker-compose.yml
 .dockerignore
-nginx.conf
 
 # Node
 node_modules
