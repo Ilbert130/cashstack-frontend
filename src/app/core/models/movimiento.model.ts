@@ -4,5 +4,5 @@ export interface Movimiento {
   tipoMovimiento: 'DEPOSITO' | 'RETIRO'; // Valores exactos del backend
   valor: number;
   fecha?: string;
-  saldoDisponible?: number;
+  saldo?: number;
 }

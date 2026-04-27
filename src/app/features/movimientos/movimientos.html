@@ -1,1 +1,90 @@
-<p>movimientos works!</p>
+<div class="view-container">
+  <div class="header-section">
+    <h2 class="view-title">Historial de Movimientos</h2>
+  </div>
+
+  @if (!mostrarFormulario) {
+  <div class="toolbar">
+    <div class="spacer"></div>
+    <button class="btn-yellow" (click)="alternarVista()">+ Nueva Transacción</button>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Cuenta</th>
+          <th>Tipo</th>
+          <th>Monto</th>
+          <th>Saldo Disponible</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (mov of listaMovimientos; track mov.id) {
+        <tr>
+          <td>{{ mov.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td><span class="account-ref">{{ mov.numeroCuenta }}</span></td>
+          <td>
+            <span [class]="'badge ' + (mov.tipoMovimiento === 'DEPOSITO' ? 'success' : 'danger')">
+              {{ mov.tipoMovimiento }}
+            </span>
+          </td>
+          <td [class]="mov.tipoMovimiento === 'DEPOSITO' ? 'text-success' : 'text-danger'">
+            <strong>{{ mov.valor | number:'1.2-2' }}</strong>
+          </td>
+          <td>$ {{ mov.saldo | number:'1.2-2' }}</td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="5" class="empty-state">
+            No se registraron movimientos.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <div class="form-container">
+    <form [formGroup]="movimientoForm" (ngSubmit)="guardarMovimiento()">
+      <h3 class="form-subtitle">Registrar Movimiento</h3>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cuenta</label>
+          <select formControlName="numeroCuenta" class="form-control">
+            <option value="">Seleccione cuenta...</option>
+            @for (cuenta of listaCuentas; track cuenta.numeroCuenta) {
+            <option [value]="cuenta.numeroCuenta">{{ cuenta.numeroCuenta }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de Operación</label>
+          <select formControlName="tipoMovimiento" class="form-control">
+            <option value="DEPOSITO">DEPOSITO</option>
+            <option value="RETIRO">RETIRO</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Monto</label>
+          <input type="number" formControlName="valor" class="form-control" placeholder="0.00">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancelar" (click)="alternarVista()">
+          Cancelar
+        </button>
+
+        <button type="submit" class="btn-procesar" [disabled]="movimientoForm.invalid">
+          Procesar Transacción
+        </button>
+      </div>
+    </form>
+  </div>
+  }
+</div>
