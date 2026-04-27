@@ -1,0 +1,29 @@
+/* Contenedor principal que ocupa toda la pantalla */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #f8f9fa; /* Fondo grisáceo del área de contenido */
+}
+
+/* La parte inferior que contiene el menú y el contenido */
+.main-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* El área central donde irán los CRUDs */
+.content-area {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+/* Opcional: Asegurar que los componentes inyectados tomen el 100% de la altura */
+router-outlet + * {
+  display: block;
+  height: 100%;
+}
