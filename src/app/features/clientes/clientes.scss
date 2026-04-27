@@ -1,0 +1,201 @@
+/* VARIABLES DE DISEÑO (Tus variables originales) */
+$primary-blue: #1a4a8b;
+$action-yellow: #ffd600;
+$bg-gray: #f8f9fa;
+$border-color: #e9ecef;
+$text-dark: #333333;
+$text-muted: #6c757d;
+
+.view-container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 20px;
+  min-height: calc(100vh - 120px);
+}
+
+.view-title {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-size: 32px;
+  color: $text-dark;
+  margin-bottom: 35px;
+  font-weight: 300;
+  border-left: 5px solid $action-yellow;
+  padding-left: 15px;
+}
+
+/* BARRA DE HERRAMIENTAS */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+
+  .search-input {
+    flex: 1;
+    max-width: 400px;
+    padding: 12px 20px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: $bg-gray;
+    transition: all 0.3s ease;
+    &:focus {
+      background-color: #fff;
+      border-color: $primary-blue;
+      box-shadow: 0 0 0 3px rgba(26, 74, 139, 0.1);
+      outline: none;
+    }
+  }
+
+  .btn-nuevo {
+    background-color: $action-yellow;
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(255, 214, 0, 0.3);
+    &:hover { background-color: #f1ca00; transform: translateY(-1px); }
+  }
+}
+
+/* TABLA MODERNA */
+.table-container {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid $border-color;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  thead {
+    background-color: $bg-gray;
+    th {
+      padding: 18px 20px;
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: $text-muted;
+      font-weight: 700;
+      border-bottom: 2px solid $border-color;
+    }
+  }
+  tbody tr {
+    border-bottom: 1px solid $border-color;
+    &:hover { background-color: rgba(26, 74, 139, 0.02); }
+    td { padding: 16px 20px; font-size: 14px; color: $text-dark; }
+  }
+
+  /* BOTONES DE ACCIÓN (Ajustados para Iconos SVG) */
+  .actions {
+    display: flex;
+    gap: 8px;
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      svg { width: 16px; height: 16px; fill: currentColor; } // El icono toma el color del texto
+
+      &.view:hover { color: #2196f3; border-color: #2196f3; background: #e3f2fd; }
+      &.edit:hover { color: #4caf50; border-color: #4caf50; background: #e8f5e9; }
+      &.delete:hover { color: #f44336; border-color: #f44336; background: #ffebee; }
+    }
+  }
+}
+
+/* --- ESTILOS DEL FORMULARIO --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  label { font-size: 12px; font-weight: 700; color: $text-muted; margin-bottom: 8px; text-transform: uppercase; }
+  .form-control {
+    padding: 12px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    &:focus { border-color: $primary-blue; outline: none; }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid $border-color;
+
+  button { padding: 12px 25px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; border: none; }
+  .btn-cancelar { background: $bg-gray; color: $text-dark; &:hover { background: #e2e6ea; } }
+  .btn-guardar {
+    background: $primary-blue; color: white;
+    &:hover { background: darken($primary-blue, 10%); }
+    &:disabled { background: #ccc; cursor: not-allowed; }
+  }
+}
+
+/* --- ESTILOS DEL MODAL (Ficha Técnica) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  width: 600px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  background: $primary-blue;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h3 { margin: 0; font-size: 18px; font-weight: 500; }
+  .btn-close { background: none; border: none; color: white; cursor: pointer; font-size: 20px; }
+}
+
+.modal-body {
+  padding: 25px;
+  .info-card {
+    background: $bg-gray;
+    padding: 20px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    .label { font-size: 11px; color: $text-muted; text-transform: uppercase; font-weight: 700; }
+    .value { font-size: 15px; color: $text-dark; font-weight: 500; margin-bottom: 10px; }
+  }
+}

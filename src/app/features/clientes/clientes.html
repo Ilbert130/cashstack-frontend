@@ -1,1 +1,177 @@
-<p>clientes works!</p>
+<div class="view-container">
+  <h2 class="view-title">Clientes</h2>
+
+  @if (!mostrarFormulario) {
+  <div class="toolbar">
+    <input type="text" class="search-input" placeholder="Buscar por nombre o identificación..."
+      (input)="onBuscar($event)">
+    <button class="btn-nuevo" (click)="alternarVista()">Nuevo</button>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID Cliente</th>
+          <th>Nombre</th>
+          <th>Género</th>
+          <th>Edad</th>
+          <th>Identificación</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cliente of listaClientes; track cliente.clienteid) {
+        <tr>
+          <td>{{ cliente.clienteid }}</td>
+          <td>{{ cliente.nombre }}</td>
+          <td>{{ cliente.genero }}</td>
+          <td>{{ cliente.edad }}</td>
+          <td>{{ cliente.identificacion }}</td>
+          <td>{{ cliente.direccion }}</td>
+          <td>{{ cliente.telefono }}</td>
+          <td class="actions">
+            <button class="btn-icon view" title="Ver" (click)="verDetalle(cliente)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+              </svg>
+            </button>
+            <button class="btn-icon edit" title="Editar" (click)="editarCliente(cliente)">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+              </svg>
+            </button>
+            <button class="btn-icon delete" title="Eliminar" (click)="eliminarCliente(cliente.clienteid)">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="8" class="empty-state">No hay registros disponibles.</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <div class="form-container">
+    <form [formGroup]="clienteForm" (ngSubmit)="guardarCliente()">
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Nombre Completo</label>
+          <input type="text" formControlName="nombre" class="form-control" placeholder="Ej: Jose Lema">
+        </div>
+
+        <div class="form-group">
+          <label>Género</label>
+          <select formControlName="genero" class="form-control">
+            <option value="MASCULINO">MASCULINO</option>
+            <option value="FEMENINO">FEMENINO</option>
+            <option value="OTRO">OTRO</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Edad</label>
+          <input type="number" formControlName="edad" class="form-control" min="18">
+        </div>
+
+        <div class="form-group">
+          <label>Identificación</label>
+          <input type="text" formControlName="identificacion" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Dirección</label>
+          <input type="text" formControlName="direccion" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="telefono" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" formControlName="contrasena" class="form-control">
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancelar" (click)="alternarVista()">Cancelar</button>
+        <button type="submit" class="btn-guardar" [disabled]="clienteForm.invalid">Guardar Cliente</button>
+      </div>
+    </form>
+  </div>
+  }
+</div>
+@if (mostrarDetalle && clienteSeleccionado) {
+<div class="modal-overlay" (click)="cerrarDetalle()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3>Perfil del Cliente</h3>
+      <button class="btn-close" (click)="cerrarDetalle()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="info-card">
+        <div>
+          <div class="label">ID Cliente</div>
+          <div class="value">{{ clienteSeleccionado.clienteid }}</div>
+        </div>
+        <div>
+          <div class="label">Identificación</div>
+          <div class="value">{{ clienteSeleccionado.identificacion }}</div>
+        </div>
+        <div style="grid-column: span 2;">
+          <div class="label">Nombre Completo</div>
+          <div class="value" style="font-size: 18px; color: #1a4a8b;">
+            {{ clienteSeleccionado.nombre }}
+          </div>
+        </div>
+        <div>
+          <div class="label">Género</div>
+          <div class="value">{{ clienteSeleccionado.genero }}</div>
+        </div>
+        <div>
+          <div class="label">Edad</div>
+          <div class="value">{{ clienteSeleccionado.edad }} años</div>
+        </div>
+        <div>
+          <div class="label">Teléfono</div>
+          <div class="value">{{ clienteSeleccionado.telefono }}</div>
+        </div>
+        <div>
+          <div class="label">Dirección</div>
+          <div class="value">{{ clienteSeleccionado.direccion }}</div>
+        </div>
+      </div>
+
+      <h4
+        style="font-size: 12px; color: #1a4a8b; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-top: 20px;">
+        CUENTAS VINCULADAS
+      </h4>
+      @if (clienteSeleccionado.cuentas && clienteSeleccionado.cuentas.length > 0) {
+      <ul style="font-size: 14px; color: #555; padding-left: 20px;">
+        @for (cuenta of clienteSeleccionado.cuentas; track cuenta.numeroCuenta) {
+        <li>{{ cuenta.numeroCuenta }} - {{ cuenta.tipoCuenta }} (Saldo: ${{ cuenta.saldoInicial }})</li>
+        }
+      </ul>
+      } @else {
+      <p style="font-size: 13px; color: #999; font-style: italic;">No posee cuentas registradas.</p>
+      }
+    </div>
+
+  </div>
+</div>
+}
