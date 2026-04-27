@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+nginx.conf
+
+# Node
+node_modules
+
+# Angular
+.angular
+
+# Test
+*.spec.ts
+*.spec.js
+
+# Docs
+README.md
+LICENSE
+
+# OS
+Thumbs.db
+.DS_Store
