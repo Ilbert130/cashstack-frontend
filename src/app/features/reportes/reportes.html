@@ -1,1 +1,96 @@
-<p>reportes works!</p>
+<div class="view-container">
+  <div class="header-section">
+    <h2 class="view-title">Estado de Cuenta por Cliente</h2>
+  </div>
+
+  <div class="filter-shell">
+    <form [formGroup]="reporteForm" (ngSubmit)="generarReporte()" class="filter-grid">
+      <div class="form-group">
+        <label>ID del Cliente</label>
+        <input type="text" formControlName="clienteId" class="form-control" placeholder="CLI-0001">
+      </div>
+      <div class="form-group">
+        <label>Fecha Inicial</label>
+        <input type="date" formControlName="inicio" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Fecha Final</label>
+        <input type="date" formControlName="fin" class="form-control">
+      </div>
+      <div class="filter-actions">
+        <button type="submit" class="btn-yellow" [disabled]="reporteForm.invalid || cargando">
+          {{ cargando ? 'Generando...' : 'Ver Reporte' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  @if (datosReporte) {
+    <div class="report-content">
+      <div class="report-header">
+        <div class="client-data">
+          <span class="label">Reporte de:</span>
+          <span class="value">{{ datosReporte.cliente }}</span>
+        </div>
+        <button class="btn-pdf-outline" (click)="descargarEstadoCuenta()">
+          Exportar PDF
+        </button>
+      </div>
+
+      @for (cuenta of datosReporte.cuentas; track cuenta.numeroCuenta) {
+        <div class="account-card">
+          <div class="account-summary-bar">
+            <div class="main-info">
+              <span class="acc-number">Nº Cuenta: <strong>{{ cuenta.numeroCuenta }}</strong></span>
+              <span class="acc-type">{{ cuenta.tipo }}</span>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="s-label">Depósitos</span>
+                <span class="s-value text-success">+{{ cuenta.totalCreditos | number:'1.2-2' }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="s-label">Retiros</span>
+                <span class="s-value text-danger">-{{ cuenta.totalDebitos | number:'1.2-2' }}</span>
+              </div>
+              <div class="stat-item highlight">
+                <span class="s-label">Saldo</span>
+                <span class="s-value">$ {{ cuenta.saldoActual | number:'1.2-2' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>FECHA</th>
+                  <th>OPERACIÓN</th>
+                  <th>VALOR</th>
+                  <th>SALDO RESULTANTE</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (mov of cuenta.movimientos; track mov.id) {
+                  <tr>
+                    <td>{{ mov.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      <span [class]="'badge ' + (mov.tipoMovimiento === 'DEPOSITO' ? 'success' : 'danger')">
+                        {{ mov.tipoMovimiento }}
+                      </span>
+                    </td>
+                    <td [class]="mov.valor >= 0 ? 'text-success' : 'text-danger'">
+                      <strong>{{ mov.valor | number:'1.2-2' }}</strong>
+                    </td>
+                    <td class="cell-saldo">$ {{ mov.saldo | number:'1.2-2' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
