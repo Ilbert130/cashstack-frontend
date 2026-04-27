@@ -1,0 +1,225 @@
+@use "sass:color";
+
+/* VARIABLES (Consistentes con Clientes) */
+$primary-blue: #1a4a8b;
+$action-yellow: #ffd600;
+$bg-gray: #f8f9fa;
+$border-color: #e9ecef;
+$text-dark: #333333;
+$text-muted: #6c757d;
+
+.view-container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 20px;
+  min-height: calc(100vh - 120px);
+}
+
+.view-title {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  font-size: 32px;
+  color: $text-dark;
+  margin-bottom: 35px;
+  font-weight: 300;
+  border-left: 5px solid $action-yellow;
+  padding-left: 15px;
+}
+
+/* BARRA DE HERRAMIENTAS */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+
+  .search-input {
+    flex: 1;
+    max-width: 400px;
+    padding: 12px 20px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: $bg-gray;
+    transition: all 0.3s ease;
+    &:focus {
+      background-color: #fff;
+      border-color: $primary-blue;
+      box-shadow: 0 0 0 3px rgba(26, 74, 139, 0.1);
+      outline: none;
+    }
+  }
+
+  .btn-nuevo {
+    background-color: $action-yellow;
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(255, 214, 0, 0.3);
+    &:hover {
+      background-color: color.adjust($action-yellow, $lightness: -5%);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* TABLA DE CUENTAS */
+.table-container {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid $border-color;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+
+  thead {
+    background-color: $bg-gray;
+    th {
+      padding: 18px 20px;
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: $text-muted;
+      font-weight: 700;
+      border-bottom: 2px solid $border-color;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border-color;
+    &:hover { background-color: rgba(26, 74, 139, 0.02); }
+
+    td {
+      padding: 16px 20px;
+      font-size: 14px;
+      color: $text-dark;
+
+      strong {
+        color: $primary-blue;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+
+  /* Etiquetas de Cliente (Chips) */
+  .client-tag {
+    background-color: #eef2f7;
+    color: $primary-blue;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    font-size: 13px;
+    border: 1px solid lighten($primary-blue, 60%);
+  }
+
+  /* BOTONES DE ACCIÓN */
+  .actions {
+    display: flex;
+    gap: 8px;
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      svg { width: 16px; height: 16px; fill: currentColor; }
+
+      &.delete:hover {
+        color: #f44336;
+        border-color: #f44336;
+        background: #ffebee;
+      }
+    }
+  }
+}
+
+/* FORMULARIO */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  label {
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-muted;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .form-control {
+    padding: 12px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 15px;
+    &:focus {
+      border-color: $primary-blue;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(26, 74, 139, 0.1);
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid $border-color;
+
+  button {
+    padding: 12px 25px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-cancelar {
+    background: $bg-gray;
+    color: $text-dark;
+    &:hover { background: #e2e6ea; }
+  }
+
+  .btn-guardar {
+    background: $primary-blue;
+    color: white;
+    &:hover {
+      background: color.adjust($primary-blue, $lightness: -10%);
+    }
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px !important;
+  color: $text-muted;
+  font-style: italic;
+}

@@ -1,1 +1,129 @@
-<p>cuentas works!</p>
+<div class="view-container">
+  <h2 class="view-title">Gestión de Cuentas Bancarias</h2>
+
+  @if (!mostrarFormulario) {
+    <div class="toolbar">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar por número de cuenta o ID de cliente..."
+        (input)="onBuscar($event)"
+      >
+      <button class="btn-nuevo" (click)="alternarVista()">+ Nueva Cuenta</button>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nº de Cuenta</th>
+            <th>Tipo de Cuenta</th>
+            <th>Saldo Inicial</th>
+            <th>ID del Cliente</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cuenta of listaCuentas; track cuenta.numeroCuenta) {
+            <tr>
+              <td><strong>{{ cuenta.numeroCuenta }}</strong></td>
+              <td>{{ cuenta.tipoCuenta }}</td>
+              <td>$ {{ cuenta.saldoInicial | number:'1.2-2' }}</td>
+              <td><span class="client-tag">{{ cuenta.clienteId }}</span></td>
+              <td class="actions">
+                <button
+                  class="btn-icon edit"
+                  title="Editar Tipo de Cuenta"
+                  (click)="prepararEdicion(cuenta)"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                  </svg>
+                </button>
+
+                <button
+                  class="btn-icon delete"
+                  title="Eliminar Cuenta"
+                  (click)="eliminarCuenta(cuenta.numeroCuenta)"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-state">
+                No se encontraron cuentas bancarias registradas.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @else {
+    <div class="form-container">
+      <form [formGroup]="cuentaForm" (ngSubmit)="guardarCuenta()">
+        <h3 class="form-subtitle">
+          {{ cuentaParaEditar ? 'Actualizar Tipo de Cuenta' : 'Vincular Nueva Cuenta' }}
+        </h3>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Titular de la Cuenta</label>
+            <select formControlName="clienteId" class="form-control">
+              <option value="">Seleccione el titular...</option>
+              @for (cliente of listaClientes; track cliente.clienteid) {
+                <option [value]="cliente.clienteid">
+                  {{ cliente.nombre }} ({{ cliente.clienteid }})
+                </option>
+              }
+            </select>
+            @if (cuentaForm.get('clienteId')?.touched && cuentaForm.get('clienteId')?.invalid) {
+              <small class="error-text">El cliente es obligatorio</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de Cuenta</label>
+            <select formControlName="tipoCuenta" class="form-control">
+              <option value="AHORRO">AHORRO</option>
+              <option value="CORRIENTE">CORRIENTE</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Depósito Inicial</label>
+            <input
+              type="number"
+              formControlName="saldoInicial"
+              class="form-control"
+              placeholder="0.00"
+            >
+            @if (cuentaForm.get('saldoInicial')?.touched && cuentaForm.get('saldoInicial')?.invalid) {
+              <small class="error-text">El saldo debe ser 0 o mayor</small>
+            }
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancelar" (click)="alternarVista()">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn-guardar"
+            [disabled]="cuentaForm.invalid"
+          >
+            {{ cuentaParaEditar ? 'Actualizar Cuenta' : 'Crear Cuenta' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

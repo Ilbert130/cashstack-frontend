@@ -1,7 +1,6 @@
 export interface Cuenta {
-  numeroCuenta: string;
-  tipoCuenta: string; // Puede ser 'AHORROS' o 'CORRIENTE'
+  numeroCuenta?: string;
+  tipoCuenta: 'AHORRO' | 'CORRIENTE'; // Quitamos la "S"
   saldoInicial: number;
-  estado: boolean;
-  clienteId?: string; // Opcional, dependiendo de si lo necesitas a este nivel
+  clienteId: string;
 }
